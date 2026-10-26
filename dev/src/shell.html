@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Винагорода 1 млн</title>
+/*PWA*/
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1>Винагорода за службу в бойових умовах<small>Пункт 4 постанови КМУ № 153, доручення МОУ № 5601/уд. Усе рахується у вашому браузері, дані нікуди не передаються. Норми станом на /*ASOF*/.</small></h1>
+  <div class="mode" role="group" aria-label="Режим роботи">
+    <button type="button" data-mode="pay" aria-pressed="true">Рішення про виплату</button>
+    <button type="button" data-mode="cert" aria-pressed="false">Довідка за Додатком 1</button>
+  </div>
+  <label class="pdtoggle" title="Вмикає поля ПІБ, РНОКПП, реквізитів документа для вставки в тексти"><input type="checkbox" id="pd">Персональні дані</label>
+  <span class="sp"></span>
+  <div class="tools">
+    <button type="button" class="btn" data-act="new">Нова справа</button>
+    <button type="button" class="btn" data-act="save">Зберегти справу</button>
+    <button type="button" class="btn" data-act="open">Відкрити справу</button>
+    <button type="button" class="btn" data-act="refs">Норми і практика</button>
+    <button type="button" class="btn ghost" data-act="help">Як працювати</button>
+    <button type="button" class="btn ghost" data-act="theme">Тема</button>
+  </div>
+  <input type="file" id="openfile" accept=".json,application/json" hidden>
+</header>
+<div class="layout">
+  <nav class="rail" id="rail" aria-label="Розділи справи"></nav>
+  <main id="main"></main>
+  <aside class="aside" aria-label="Висновок"><div class="verdict" id="verdict" aria-live="polite"></div></aside>
+</div>
+
+<dialog id="refdlg" aria-labelledby="refdlg-t">
+  <div class="dlg-h"><h2 id="refdlg-t">Норми, позиції МОУ і практика</h2><button type="button" class="btn" data-act="closedlg">Закрити</button></div>
+  <div class="dlg-b" id="refbody"></div>
+</dialog>
+
+<dialog id="cfmdlg" aria-labelledby="cfmtext">
+  <div class="dlg-b"><p id="cfmtext" style="margin:6px 0 16px"></p><div class="docbar"><button type="button" class="btn primary" id="cfmyes" data-act="cfmyes">Так</button><button type="button" class="btn" data-act="closedlg">Скасувати</button></div></div>
+</dialog>
+<dialog id="savedlg" aria-labelledby="savedlg-t">
+  <div class="dlg-h"><h2 id="savedlg-t">Зберегти справу</h2><button type="button" class="btn" data-act="closedlg">Закрити</button></div>
+  <div class="dlg-b"><p>Тут файл не завантажується. Скопіюйте текст справи і збережіть його, наприклад, у Нотатках. Щоб продовжити роботу, натисніть «Відкрити справу» і вставте цей текст.</p><textarea id="jsontext" class="inp" rows="8" readonly style="width:100%;font-family:ui-monospace,monospace;font-size:12px"></textarea><div class="docbar" style="margin-top:10px"><button type="button" class="btn primary" data-act="copyjson">Копіювати текст справи</button></div></div>
+</dialog>
+<dialog id="opendlg" aria-labelledby="opendlg-t">
+  <div class="dlg-h"><h2 id="opendlg-t">Відкрити справу</h2><button type="button" class="btn" data-act="closedlg">Закрити</button></div>
+  <div class="dlg-b"><p>Оберіть збережений файл справи (.json) або вставте текст справи.</p><div class="docbar"><button type="button" class="btn" data-act="pickfile">Обрати файл</button></div><textarea id="pastetext" class="inp" rows="6" placeholder="Вставте сюди текст справи" style="width:100%;font-family:ui-monospace,monospace;font-size:12px"></textarea><div class="docbar" style="margin-top:10px"><button type="button" class="btn primary" data-act="pastejson">Відкрити вставлену справу</button></div></div>
+</dialog>
+
+<dialog id="helpdlg" aria-labelledby="helpdlg-t">
+  <div class="dlg-h"><h2 id="helpdlg-t">Як працювати</h2><button type="button" class="btn" data-act="closedlg">Закрити</button></div>
+  <div class="dlg-b">
+    <h3>Два режими</h3>
+    <p><b>Рішення про виплату</b> для комісії частини, яка вирішує, чи виплачувати Винагороду: перевіряє всі умови пункту 4 Постанови, пакет із п'яти груп документів і формує висновок комісії, проєкт пункту наказу, відповідь з відмовою або запити до частин.</p>
+    <p><b>Довідка за Додатком 1</b> для частини, яка за бойовими наказами (розпорядженнями), ЖБД (бойовими донесеннями) і рапортами командирів визначає періоди участі та видає довідку. Формує текст довідки і довідку-обґрунтування до неї.</p>
+    <h3>Персональні дані</h3>
+    <p>Перемикач «Персональні дані» вгорі відкриває поля ПІБ, РНОКПП, реквізитів військово-облікового документа. Вимкнено: у текстах будуть жовті поля для заповнення вручну. Дата народження потрібна завжди, бо від неї залежить вік. Автозбереження в браузері відбувається без персональних даних; повна справа зберігається у файл лише кнопкою «Зберегти справу».</p>
+    <h3>Порядок роботи</h3>
+    <ol>
+      <li>Заповнюйте розділи згори вниз. Праворуч штамп показує поточний висновок, а під ним перелік підстав для відмови, відсутніх документів і двозначних положень. Клік по пункту переводить до потрібного розділу.</li>
+      <li>Кожен період участі вносьте окремо. Відмічайте формулювання, які трапляються в документах: зелені підтверджують участь, червоні самі по собі не підтверджують, жовті потребують рішення комісії. Дослівну фразу з документа можна вписати, вона потрапить в обґрунтування.</li>
+      <li>Якщо комісія не погоджується з автоматичною оцінкою періоду, оберіть «Врахувати» або «Не враховувати» і напишіть обґрунтування.</li>
+      <li>У розділі «Тлумачення» комісія фіксує позицію щодо норм, які можна прочитати по-різному. Типово обрано позицію, яку комісії найлегше обґрунтувати: здебільшого позицію МОУ, а там, де її немає і суди одностайні, позицію судів. Біля кожного варіанта вказано, на чому він тримається і який ризик несе. Обране тлумачення потрапляє у висновок.</li>
+      <li>У розділі «Рішення» оберіть документ, перевірте текст, за потреби виправте прямо на сторінці, потім скопіюйте, збережіть у Word або роздрукуйте.</li>
+    </ol>
+    <h3>Позначки джерел</h3>
+    <p><span class="ref k-p">Постанова</span> норма Кабінету Міністрів; <span class="ref k-d">Доручення</span> порядок, визначений Міністром оборони; <span class="ref k-r">Роз'яснення МОУ</span> позиція Департаменту соціального забезпечення, не нормативний акт; <span class="ref k-l">Закон</span> кодекси, накази МОУ. Натисніть позначку, щоб побачити повне посилання.</p>
+    <h3>Обмеження</h3>
+    <p>Інструмент допомагає не пропустити умови і правильно послатися на норми, але не замінює юридичної оцінки комісії. Перед застосуванням перевірте, чи не змінилися Постанова, доручення і роз'яснення після дати, зазначеної вгорі.</p>
+  </div>
+</dialog>
+<script>
+/*JS*/
+</script>
+/*PWAJS*/
+</body>
+</html>
