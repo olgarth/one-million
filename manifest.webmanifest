@@ -1,0 +1,17 @@
+{
+  "name": "Винагорода 1 млн",
+  "short_name": "1 млн",
+  "description": "Рішення комісії щодо Винагороди 1 000 000 грн (п.4 постанови КМУ № 153) і довідка за Додатком 1.",
+  "lang": "uk",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#2a3d90",
+  "background_color": "#e9ede8",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
